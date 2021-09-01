@@ -1,0 +1,65 @@
+{
+  "name": "@pointnetwork/granax",
+  "version": "3.2.6",
+  "description": "complete client implementation of the tor control protocol",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "node script/download-tbb.js",
+    "test": "npm run test-suite && npm run linter",
+    "test-suite": "mocha test/** --recursive",
+    "coverage": "istanbul cover _mocha -- --recursive",
+    "linter": "eslint index.js lib test",
+    "generate-docs": "mkdir -p ./public && rm -r ./public && jsdoc index.js lib -r -R README.md -u ./doc -c .jsdoc.json --verbose -d ./public"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pointnetwork/granax.git"
+  },
+  "keywords": [
+    "tor",
+    "onion",
+    "control",
+    "protocol",
+    "hidden",
+    "service",
+    "anonymous",
+    "dark",
+    "net",
+    "deep",
+    "web",
+    "stem"
+  ],
+  "author": "Emery Rose Hall <emery@deadcanaries.org>",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/pointnetwork/granax/issues"
+  },
+  "homepage": "https://gitlab.com/pointnetwork/granax#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^3.0.2",
+    "eslint": "^5.15.1",
+    "ink-docstrap": "git+https://gitlab.com/pointnetwork/docstrap.git",
+    "istanbul": "^0.4.5",
+    "jsdoc": "^3.4.3",
+    "mocha": "^5.2.0",
+    "proxyquire": "^1.7.11",
+    "sinon": "^2.1.0"
+  },
+  "dependencies": {
+    "async": "^2.3.0",
+    "latest-torbrowser-version": "^2.0.2",
+    "merge": "^1.2.1",
+    "mkdirp": "^0.5.1",
+    "mv": "^2.1.1",
+    "progress": "^2.0.3",
+    "rimraf": "^2.6.3"
+  },
+  "optionalDependencies": {
+    "7zip": "0.0.6",
+    "ncp": "^2.0.0"
+  }
+}
