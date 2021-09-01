@@ -65,6 +65,11 @@ exports.getTorBrowserLink = function(platform, version, callback) {
  * @param {function} callback
  */
 exports.downloadTorBrowserBundle = function(link, target, callback) {
+  if (fs.existsSync(target)) {
+    callback()
+    return
+  }
+
   request(link, (res) => {
     if (res.statusCode !== 200) {
       callback(new Error(
@@ -115,8 +120,7 @@ exports.unpackTorBrowserBundle = function(bundle, callback) {
  */
 exports._unpackWindows = function(bundle, callback) {
   const extract = childProcess.spawn(_7z, [
-    'x',
-    path.join(BIN_DIR, '.tbb.exe')
+    'x', bundle
   ], { cwd: BIN_DIR });
 
   extract.on('close', (code) => {
@@ -133,7 +137,7 @@ exports._unpackMacintosh = function(bundle, callback) {
     'attach',
     '-mountpoint',
     path.join(BIN_DIR, '.tbb'),
-    path.join(BIN_DIR, '.tbb.dmg')
+    bundle
   ], { cwd: BIN_DIR });
 
   mounter.on('close', (code) => {
@@ -171,8 +175,7 @@ exports._unpackMacintosh = function(bundle, callback) {
  */
 exports._unpackLinux = function(bundle, callback) {
   const extract = childProcess.spawn('tar', [
-    'xJf',
-    path.join(BIN_DIR, '.tbb.xz')
+    'xJf', bundle
   ], { cwd: BIN_DIR });
 
   extract.stdout.pipe(process.stdout);
@@ -198,23 +201,6 @@ exports.install = function(callback) {
     return;
   }
 
-  switch (os.platform()) {
-    case 'win32':
-      basename = '.tbb.exe';
-      break;
-    case 'darwin':
-      basename = '.tbb.dmg';
-      break;
-    case 'android':
-    case 'linux':
-      basename = '.tbb.xz';
-      break;
-    default:
-      throw new Error('Unsupported platform');
-  }
-
-  basename = path.join(BIN_DIR, basename);
-
   exports.getTorBrowserLink(
     os.platform(),
     process.env.GRANAX_TOR_VERSION,
@@ -224,6 +210,8 @@ exports.install = function(callback) {
       }
 
       console.log(`Downloading Tor Bundle from ${link}...`);
+      basename = path.basename(new URL(link).pathname)
+      basename = path.join(BIN_DIR, basename);
       exports.downloadTorBrowserBundle(link, basename, (err) => {
         if (err) {
           return callback(err);
@@ -241,6 +229,7 @@ exports.install = function(callback) {
 
           const source = path.dirname(granax.tor(os.platform()));
           const dest = path.join(BIN_DIR, 'Tor');
+          rimraf.sync(dest);
 
           console.log(`Moving tor binary and libs to ${dest}...`);
           mv(source, dest, (err) => {
@@ -250,7 +239,6 @@ exports.install = function(callback) {
 
             console.log('Cleaning up...');
             rimraf.sync(granax.tor(os.platform()));
-            rimraf.sync(basename);
 
             switch (os.platform()) {
               case 'win32':
