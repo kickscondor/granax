@@ -1,2 +1,5 @@
 bin/
 node_modules/
+
+.pnpm-debug.log
+pnpm-lock.yaml
