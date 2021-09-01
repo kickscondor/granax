@@ -1,6 +1,6 @@
 {
   "name": "@pointnetwork/granax",
-  "version": "3.2.6",
+  "version": "3.2.7",
   "description": "complete client implementation of the tor control protocol",
   "main": "index.js",
   "scripts": {
