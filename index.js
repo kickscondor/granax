@@ -146,3 +146,5 @@ module.exports.replies = require('./lib/replies');
  * {@link module:granax/torrc}
  */
 module.exports.torrc = require('./lib/torrc');
+
+module.exports.bin = BIN_PATH

@@ -72,10 +72,11 @@ describe('@module:granax/replies', function() {
     it('should return the service id and private key', function() {
       let result = replies.ADD_ONION([
         'ServiceID=myonionaddress',
-        'PrivateKey=someprivatekey'
+        'PrivateKey=keytype:someprivatekey'
       ]);
       expect(result.serviceId).to.equal('myonionaddress');
-      expect(result.privateKey).to.equal('someprivatekey');
+      expect(result.privateKey.keyType).to.equal('keytype');
+      expect(result.privateKey.keyBlob).to.equal('someprivatekey');
     });
 
     it('should return the service id', function() {
@@ -83,6 +84,7 @@ describe('@module:granax/replies', function() {
         'ServiceID=myonionaddress'
       ]);
       expect(result.serviceId).to.equal('myonionaddress');
+      expect(result.privateKey).to.equal(null);
     });
 
   });

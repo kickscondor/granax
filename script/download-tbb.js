@@ -8,9 +8,8 @@ const _7z = require('7zip')['7z'];
 const path = require('path');
 const childProcess = require('child_process');
 const os = require('os');
-const { tor: getTorPath } = require('..');
+const { tor: getTorPath, bin: BIN_DIR } = require('..');
 const getLatestTorBrowserVersion = require('latest-torbrowser-version');
-const BIN_DIR = path.join(__dirname, '../bin');
 const rimraf = require('rimraf');
 const mv = require('mv');
 const granax = require('../index');
@@ -265,7 +264,7 @@ exports.install = function(callback) {
   );
 };
 
-if (!module.parent) {
+if (require.main === module) {
   exports.install((err) => {
     if (err) {
       console.log(err.message);
