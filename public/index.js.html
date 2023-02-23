@@ -9,8 +9,7 @@
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-
-	<script src="scripts/highlight.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
 	<link type="text/css" rel="stylesheet" href="styles/site.granax.css">
 
@@ -21,7 +20,8 @@
 <div class="navbar navbar-default navbar-fixed-top ">
 <div class="container">
 	<div class="navbar-header">
-		<a class="navbar-brand" style="background-image:url(img/granax.png)"  href="index.html">Granax</a>
+		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/granax.png"
+		alt="logo"/>Granax</a>
 		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
@@ -60,16 +60,18 @@
 			</li>
 			
 		</ul>
-		<div class="col-sm-3 col-md-4">
-            <form class="navbar-form" role="search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        
 	</div>
 
 </div>
@@ -124,13 +126,19 @@ module.exports = function(options, torrcOptions) {
 
   let exe = path.basename(module.exports.tor(platform()));
   let tor = path.join(BIN_PATH, 'Tor', exe);
+  let env = { LD_LIBRARY_PATH: path.join(BIN_PATH, 'Tor') };
+
+  if (process.env.GRANAX_USE_SYSTEM_TOR &amp;&amp; process.platform === 'linux') {
+    tor = exe;
+    env = {};
+  }
 
   let args = process.env.GRANAX_TOR_ARGS
     ? process.env.GRANAX_TOR_ARGS.split(' ')
     : [];
   let child = spawn(tor, ['-f', torrc].concat(args), {
     cwd: BIN_PATH,
-    env: { LD_LIBRARY_PATH: path.join(BIN_PATH, 'Tor') }
+    env
   });
   let portFileReads = 0;
 
@@ -176,31 +184,35 @@ module.exports = function(options, torrcOptions) {
  * @returns {string}
  */
 module.exports.tor = function(platform) {
-  /* eslint complexity: ["error", 7] */
+  /* eslint complexity: ["error", 8] */
   let torpath = null;
+
+  /* istanbul ignore else */
+  if (process.env.GRANAX_USE_SYSTEM_TOR) {
+    try {
+      torpath = execFileSync(
+        platform === 'win32' ? 'where' : 'which',
+        ['tor']
+      ).toString().trim();
+    } catch (err) {
+      /* istanbul ignore next */
+      throw new Error('Tor is not installed');
+    }
+
+    return torpath;
+  }
 
   switch (platform) {
     case 'win32':
       torpath = path.join(BIN_PATH, 'Browser', 'TorBrowser', 'Tor', 'tor.exe');
       break;
     case 'darwin':
-      torpath = path.join(BIN_PATH, '.tbb.app', 'Contents', 'Resources',
-        'TorBrowser', 'Tor', 'tor');
+      torpath = path.join(BIN_PATH, '.tbb.app', 'Contents', 'MacOS', 'Tor',
+        'tor.real');
       break;
     case 'android':
     case 'linux':
-      /* istanbul ignore else */
-      if (process.env.GRANAX_USE_SYSTEM_TOR) {
-        // NB: Use the system Tor installation on android and linux
-        try {
-          torpath = execFileSync('which', ['tor']).toString().trim();
-        } catch (err) {
-          /* istanbul ignore next */
-          throw new Error('Tor is not installed');
-        }
-      } else {
-        torpath = path.join(LD_LIBRARY_PATH, 'tor');
-      }
+      torpath = path.join(LD_LIBRARY_PATH, 'tor');
       break;
     default:
       throw new Error(`Unsupported platform "${platform}"`);
@@ -228,6 +240,8 @@ module.exports.replies = require('./lib/replies');
  * {@link module:granax/torrc}
  */
 module.exports.torrc = require('./lib/torrc');
+
+module.exports.bin = BIN_PATH
 </pre>
     </article>
 </section>
@@ -246,20 +260,22 @@ module.exports.torrc = require('./lib/torrc');
 </div>
 </div>
 
-<div class="modal fade" id="searchResults">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Search results</h4>
-      </div>
-      <div class="modal-body"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
 
 <footer>
 
@@ -269,7 +285,7 @@ module.exports.torrc = require('./lib/torrc');
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a>
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
@@ -277,7 +293,9 @@ module.exports.torrc = require('./lib/torrc');
 
 <script src="scripts/docstrap.lib.js"></script>
 <script src="scripts/toc.js"></script>
-<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
 
 <script>
 $( function () {
@@ -287,7 +305,7 @@ $( function () {
 		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
 	} );
 
-	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
 		var $this = $( this );
 
 		var example = $this.find( "code" );
@@ -305,24 +323,25 @@ $( function () {
 		if ( lang ) {
 
 			$this
-			.addClass( lang )
+			.addClass( "sunlight-highlight-" + lang )
 			.addClass( "linenums" )
 			.html( example.html() );
 
 		}
 	} );
 
-	$('pre').each(function(i, block) {
-		hljs.highlightBlock(block);
-	});
+	Sunlight.highlightAll( {
+		lineNumbers : false,
+		showMenu : true,
+		enableDoclinks : true
+	} );
 
 	$.catchAnchorLinks( {
         navbarOffset: 10
 	} );
 	$( "#toc" ).toc( {
 		anchorName  : function ( i, heading, prefix ) {
-			var id = $( heading ).attr( "id" );
-			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+			return $( heading ).attr( "id" ) || ( prefix + i );
 		},
 		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
 		showAndHide : false,
@@ -348,11 +367,13 @@ $( function () {
 <!--Google Analytics-->
 
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		SearcherDisplay.init();
-	});
-</script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
 
 </body>
 </html>
