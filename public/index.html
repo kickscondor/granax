@@ -113,7 +113,7 @@
 Control a running Tor instance from Node.js!</p>
 <h2>Usage</h2>
 <p>Install via NPM:</p>
-<pre class="prettyprint source"><code>npm install @deadcanaries/granax --save
+<pre class="prettyprint source"><code>npm install @rohamgames/granax --save
 </code></pre>
 <p>As part of the installation process, Granax will download the Tor Browser
 Bundle local to itself and use the included Tor executable, however you may
@@ -121,7 +121,7 @@ opt for Granax to use the system Tor installed using your distribution's
 package manager by setting <code>GRANAX_USE_SYSTEM_TOR=1</code>.</p>
 <p>You can also tell Granax to install the latest alpha release of Tor instead of
 the latest stable release, with <code>GRANAX_USE_TOR_ALPHA=1</code>.</p>
-<pre class="prettyprint source lang-js"><code>const tor = require('@deadcanaries/granax')();
+<pre class="prettyprint source lang-js"><code>const tor = require('@rohamgames/granax')();
 
 tor.on('ready', function() {
   tor.createHiddenService('127.0.0.1:8080', (err, result) => {
@@ -138,7 +138,7 @@ tor.on('error', function(err) {
 <p>Make sure that <code>ControlPort=9051</code> (or your preferred port) is set in your
 <code>torrc</code>, then you may open the control socket and issue commands:</p>
 <pre class="prettyprint source lang-js"><code>const { connect } = require('net');
-const { TorController } = require('@deadcanaries/granax');
+const { TorController } = require('@rohamgames/granax');
 const tor = new TorController(connect(9051), options);
 
 tor.on('ready', function() {

@@ -211,6 +211,7 @@ exports.install = function(callback) {
       console.log(`Downloading Tor Bundle from ${link}...`);
       basename = path.basename(new URL(link).pathname)
       basename = path.join(BIN_DIR, basename);
+      console.log(basename,'basename');
       try { fs.mkdirSync(BIN_DIR, {recursive: true}) } catch {}
       exports.downloadTorBrowserBundle(link, basename, (err) => {
         if (err) {
