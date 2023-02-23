@@ -87,10 +87,10 @@ describe('@module granax', function() {
 
     it('should return the gnu+linux path', function() {
       expect(granax.tor('linux').includes(
-        'bin/tor-browser_en-US/Browser/TorBrowser/Tor/tor'
+        'bin/tor-browser_ALL/Browser/TorBrowser/Tor/tor'
       )).to.equal(true);
       expect(granax.tor('android').includes(
-        'bin/tor-browser_en-US/Browser/TorBrowser/Tor/tor'
+        'bin/tor-browser_ALL/Browser/TorBrowser/Tor/tor'
       )).to.equal(true);
     });
 

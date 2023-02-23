@@ -14,7 +14,7 @@ const { readFileSync } = require('fs');
 
 const BIN_PATH = path.join(__dirname, 'bin');
 const LD_LIBRARY_PATH = path.join(
-  BIN_PATH, 'tor-browser_en-US', 'Browser', 'TorBrowser', 'Tor'
+  BIN_PATH, 'tor-browser_ALL', 'Browser', 'TorBrowser', 'Tor'
 );
 
 
