@@ -1,6 +1,6 @@
 {
   "name": "@rohamgames/granax",
-  "version": "3.3.4",
+  "version": "3.3.5",
   "description": "complete client implementation of the tor control protocol",
   "main": "index.js",
   "scripts": {

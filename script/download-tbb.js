@@ -250,7 +250,7 @@ exports.install = function(callback) {
                 break;
               case 'android':
               case 'linux':
-                rimraf.sync(path.join(BIN_DIR, 'tor-browser_ALL'));
+                rimraf.sync(path.join(BIN_DIR, 'tor-browser'));
                 break;
               default:
             }
