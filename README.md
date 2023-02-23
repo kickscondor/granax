@@ -10,7 +10,7 @@ Usage
 Install via NPM:
 
 ```
-npm install @deadcanaries/granax --save
+npm install @rohamgames/granax --save
 ```
 
 As part of the installation process, Granax will download the Tor Browser 
@@ -22,7 +22,7 @@ You can also tell Granax to install the latest alpha release of Tor instead of
 the latest stable release, with `GRANAX_USE_TOR_ALPHA=1`.
 
 ```js
-const tor = require('@deadcanaries/granax')();
+const tor = require('@rohamgames/granax')();
 
 tor.on('ready', function() {
   tor.createHiddenService('127.0.0.1:8080', (err, result) => {
@@ -43,7 +43,7 @@ Make sure that `ControlPort=9051` (or your preferred port) is set in your
 
 ```js
 const { connect } = require('net');
-const { TorController } = require('@deadcanaries/granax');
+const { TorController } = require('@rohamgames/granax');
 const tor = new TorController(connect(9051), options);
 
 tor.on('ready', function() {

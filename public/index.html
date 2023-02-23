@@ -9,8 +9,7 @@
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-
-	<script src="scripts/highlight.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
 	<link type="text/css" rel="stylesheet" href="styles/site.granax.css">
 
@@ -21,7 +20,8 @@
 <div class="navbar navbar-default navbar-fixed-top ">
 <div class="container">
 	<div class="navbar-header">
-		<a class="navbar-brand" style="background-image:url(img/granax.png)"  href="index.html">Granax</a>
+		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/granax.png"
+		alt="logo"/>Granax</a>
 		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
@@ -60,16 +60,18 @@
 			</li>
 			
 		</ul>
-		<div class="col-sm-3 col-md-4">
-            <form class="navbar-form" role="search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        
 	</div>
 
 </div>
@@ -106,16 +108,20 @@
 
 
     <section class="readme-section">
-        <article><h1>Granax</h1><p>Complete client implementation of the <a href="https://gitweb.torproject.org/torspec.git/plain/control-spec.txt">Tor Control Protocol</a>. 
+        <article><h1>Granax</h1>
+<p>Complete client implementation of the <a href="https://gitweb.torproject.org/torspec.git/plain/control-spec.txt">Tor Control Protocol</a>.
 Control a running Tor instance from Node.js!</p>
-<h2>Usage</h2><p>Install via NPM:</p>
-<pre class="prettyprint source"><code>npm install granax --save</code></pre><p>As part of the installation process, Granax will download the Tor Browser 
-Bundle local to itself and use the included Tor executable, however on 
-GNU+Linux, you may opt for Granax to use the system Tor installed using your 
-distribution's package manager by setting <code>GRANAX_USE_SYSTEM_TOR=1</code>. </p>
-<p>You can also tell Granax to install the latest alpha release of Tor instead of 
+<h2>Usage</h2>
+<p>Install via NPM:</p>
+<pre class="prettyprint source"><code>npm install @rohamgames/granax --save
+</code></pre>
+<p>As part of the installation process, Granax will download the Tor Browser
+Bundle local to itself and use the included Tor executable, however you may
+opt for Granax to use the system Tor installed using your distribution's
+package manager by setting <code>GRANAX_USE_SYSTEM_TOR=1</code>.</p>
+<p>You can also tell Granax to install the latest alpha release of Tor instead of
 the latest stable release, with <code>GRANAX_USE_TOR_ALPHA=1</code>.</p>
-<pre class="prettyprint source lang-js"><code>const tor = require('granax')();
+<pre class="prettyprint source lang-js"><code>const tor = require('@rohamgames/granax')();
 
 tor.on('ready', function() {
   tor.createHiddenService('127.0.0.1:8080', (err, result) => {
@@ -126,27 +132,34 @@ tor.on('ready', function() {
 
 tor.on('error', function(err) {
   console.error(err);
-});</code></pre><h3>Using System Tor Package</h3><p>Make sure that <code>ControlPort=9051</code> (or your preferred port) is set in your 
+});
+</code></pre>
+<h3>Using System Tor Package</h3>
+<p>Make sure that <code>ControlPort=9051</code> (or your preferred port) is set in your
 <code>torrc</code>, then you may open the control socket and issue commands:</p>
 <pre class="prettyprint source lang-js"><code>const { connect } = require('net');
-const { TorController } = require('granax');
+const { TorController } = require('@rohamgames/granax');
 const tor = new TorController(connect(9051), options);
 
 tor.on('ready', function() {
   // party!
-});</code></pre><blockquote>
-<p>Note that if using cookie authentication, the Node.js process must have the 
-appropriate privileges to read the cookie file. Usually, this means running 
+});
+</code></pre>
+<blockquote>
+<p>Note that if using cookie authentication, the Node.js process must have the
+appropriate privileges to read the cookie file. Usually, this means running
 as the same user that is running Tor.</p>
 </blockquote>
-<h2>Resources</h2><ul>
-<li><a href="https://gitlab.com/allcomputersarebroken/granax">Granax Source</a></li>
-<li><a href="https://gitlab.com/allcomputersarebroken/granax/tree/master/examples">Granax Examples</a></li>
-<li><a href="https://allcomputersarebroken.gitlab.io/granax">Granax Documentation</a></li>
+<h2>Resources</h2>
+<ul>
+<li><a href="https://gitlab.com/deadcanaries/granax/tree/master/examples">Granax Examples</a></li>
+<li><a href="https://deadcanaries.gitlab.io/granax">Granax Documentation</a></li>
 <li><a href="https://gitweb.torproject.org/torspec.git/plain/control-spec.txt">Tor Control Specification</a></li>
 <li><a href="https://www.torproject.org/docs/documentation.html.en">Tor Documentation</a></li>
 </ul>
-<h2>License</h2><p>Granax - Complete client implementation of the Tor Control Protocol<br>Copyright (C) 2017 Gordon Hall</p>
+<h2>License</h2>
+<p>Granax - Complete client implementation of the Tor Control Protocol<br>
+Copyright (C) 2019 Dead Canaries, Inc.</p>
 <p>This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
 by the Free Software Foundation, either version 3 of the License, or
@@ -156,7 +169,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.</p>
 <p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p></article>
+along with this program.  If not, see <a href="http:%5C/%5C/www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p></article>
     </section>
 
 
@@ -179,20 +192,22 @@ along with this program.  If not, see <a href="http://www.gnu.org/licenses/">htt
 </div>
 </div>
 
-<div class="modal fade" id="searchResults">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Search results</h4>
-      </div>
-      <div class="modal-body"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
 
 <footer>
 
@@ -202,7 +217,7 @@ along with this program.  If not, see <a href="http://www.gnu.org/licenses/">htt
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a>
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
@@ -210,7 +225,9 @@ along with this program.  If not, see <a href="http://www.gnu.org/licenses/">htt
 
 <script src="scripts/docstrap.lib.js"></script>
 <script src="scripts/toc.js"></script>
-<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
 
 <script>
 $( function () {
@@ -220,7 +237,7 @@ $( function () {
 		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
 	} );
 
-	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
 		var $this = $( this );
 
 		var example = $this.find( "code" );
@@ -238,24 +255,25 @@ $( function () {
 		if ( lang ) {
 
 			$this
-			.addClass( lang )
+			.addClass( "sunlight-highlight-" + lang )
 			.addClass( "linenums" )
 			.html( example.html() );
 
 		}
 	} );
 
-	$('pre').each(function(i, block) {
-		hljs.highlightBlock(block);
-	});
+	Sunlight.highlightAll( {
+		lineNumbers : false,
+		showMenu : true,
+		enableDoclinks : true
+	} );
 
 	$.catchAnchorLinks( {
         navbarOffset: 10
 	} );
 	$( "#toc" ).toc( {
 		anchorName  : function ( i, heading, prefix ) {
-			var id = $( heading ).attr( "id" );
-			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+			return $( heading ).attr( "id" ) || ( prefix + i );
 		},
 		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
 		showAndHide : false,
@@ -281,11 +299,13 @@ $( function () {
 <!--Google Analytics-->
 
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		SearcherDisplay.init();
-	});
-</script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
 
 </body>
 </html>
