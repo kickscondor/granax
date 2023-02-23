@@ -1,6 +1,6 @@
 {
-  "name": "@kickscondor/granax",
-  "version": "3.2.9",
+  "name": "@rohamgames/granax",
+  "version": "3.3.0",
   "description": "complete client implementation of the tor control protocol",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kickscondor/granax.git"
+    "url": "https://github.com/rohamgames/granax.git"
   },
   "keywords": [
     "tor",
@@ -35,9 +35,9 @@
   "author": "Emery Rose Hall <emery@deadcanaries.org>",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/kickscondor/granax/issues"
+    "url": "https://github.com/rohamgames/granax/issues"
   },
-  "homepage": "https://gitlab.com/kickscondor/granax#readme",
+  "homepage": "https://gitlab.com/rohamgames/granax#readme",
   "devDependencies": {
     "chai": "^3.5.0",
     "coveralls": "^3.1.1",
